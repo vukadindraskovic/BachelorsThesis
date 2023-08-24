@@ -50,6 +50,7 @@ await mqttService.SubsribeToTopicsAsync(mqttTopics);
 
 // InfluxDB
 var influxDbClient = InfluxDBClientFactory.Create(influxdbAddress, influxdbToken);
+await influxDbClient.GetDeleteApi().Delete(DateTime.Parse("1970-01-01T00:00:00Z"), DateTime.Now, "_measurement=\"traffic_jam\"", influxdbBucket, influxdbOrganization);
 
 #endregion
 
