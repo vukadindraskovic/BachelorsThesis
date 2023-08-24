@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "gd41tYltIkDF/tEO/43q76s75l8k2H5MtU3Te7bXlS3fJhWX6JZ3eTg87mk687cND4J0DYSNfZ3PZBuenJeaRw==",
+  "success": true,
+  "projectFilePath": "D:\\Fakultet\\8. Semestar\\Diplomski rad\\Microservices\\Mqtt\\Mqtt.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\vukad\\.nuget\\packages\\mqttnet\\4.2.1.781\\mqttnet.4.2.1.781.nupkg.sha512"
+  ],
+  "logs": []
+}
