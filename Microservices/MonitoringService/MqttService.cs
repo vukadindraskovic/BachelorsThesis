@@ -1,16 +1,22 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Text;
+using Microsoft.AspNetCore.SignalR;
 
 namespace MonitoringService;
 
 public class MqttService
 {
     private IMqttClient mqttClient;
+    public IHubContext<TrafficJamHub> HubContext { get; set; }
 
-    public MqttService()
+    public MqttService(IHubContext<TrafficJamHub> hubContext)
     {
         var mqttFactory = new MqttFactory();
         mqttClient = mqttFactory.CreateMqttClient();
+        HubContext = hubContext;
     }
 
     public async Task ConnectAsync(string brokerAddress, int port)

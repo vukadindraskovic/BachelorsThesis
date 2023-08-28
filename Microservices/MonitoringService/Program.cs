@@ -1,6 +1,7 @@
 ﻿using InfluxDB.Client;
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Writes;
+using Microsoft.AspNetCore.SignalR;
 using MonitoringService;
 using MQTTnet.Client;
 using Newtonsoft.Json;
@@ -9,15 +10,34 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSingleton<MqttService>();
+builder.Services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+{
+    builder.AllowAnyMethod()
+            .AllowAnyHeader()
+            .SetIsOriginAllowed(origin => true)
+            .AllowCredentials();
+}));
+builder.Services.AddSignalR();
+
+var app = builder.Build();
+app.UseRouting();
+app.MapHub<TrafficJamHub>("/TrafficJamHub");
+app.UseCors("CorsPolicy");
+        
 #region CONSTANTS
 // RabbitMQ
 var rabbitMqExchange = "vehicles_topic";
 var rabbitMqVehicleQueue = "sensor.vehicles";
 var rabbitMqJamQueue = "monitoring.jam";
 var routingKey = "*.sth.#";
+var rabbitMqAddress = "rabbitMq";
+//var rabbitMqAddress = "localhost";
 
 // MQTT
 var mqttBrokerAddress = "emqx";
+//var mqttBrokerAddress = "localhost";
 var mqttPort = 1883;
 // var vehicleTopic = "vehicleSensor/values";
 var ekuiperTopic = "ekuiper/jam";
@@ -25,16 +45,17 @@ var mqttTopics = new List<string> { ekuiperTopic };
 
 // InfluxDB
 var influxdbAddress = "http://influxdb:8086";
-var influxdbToken = "jeDCcUAE5JDCVRpAKs97o00XXQikkuOxmITZ9XrOz2soYKBD_wOZ6IfRZidjm78QGdC6LJfaTKBFcNvA7pmsrw==".ToCharArray();
+//var influxdbAddress = "http://localhost:8086";
+var influxdbToken = "DhTveJ8lDBUsMIDLkHYYnx3bilsVWiCiCylGAxvyZsOd39a32YTsQb0sTG3KE_e4LU0OOHD5OTaMqZ4_V9H-XQ==".ToCharArray();
 var influxdbOrganization = "vukadin";
 var influxdbBucket = "bachelorsThesis";
 
-#endregion 
+#endregion
 
 #region CONNECTION
 
 // RabbitMQ
-var factory = new ConnectionFactory { HostName = "rabbitmq" };
+var factory = new ConnectionFactory { HostName = rabbitMqAddress };
 var connection = factory.CreateConnection();
 var channel = connection.CreateModel();
 channel.ExchangeDeclare(rabbitMqExchange, ExchangeType.Topic);
@@ -44,7 +65,7 @@ channel.QueueBind(rabbitMqVehicleQueue, rabbitMqExchange, routingKey);
 channel.QueueDeclare(rabbitMqJamQueue, durable: false, exclusive: false, autoDelete: false, arguments: null);
 
 // MQTT
-var mqttService = new MqttService();
+var mqttService = app.Services.GetService<MqttService>();
 await mqttService.ConnectAsync(mqttBrokerAddress, mqttPort);
 await mqttService.SubsribeToTopicsAsync(mqttTopics);
 
@@ -61,10 +82,10 @@ async Task WriteToInfluxDbAsync(double timestep, string lane, double maxVehicleS
     var point = PointData
         .Measurement("traffic_jam")
         .Tag("lane", lane)
+        .Tag("vehicle_count", vehicleCount.ToString())
         .Field("timestep", timestep)
-        .Field("vehicle_count", vehicleCount)
         .Field("max_vehicle_speed", maxVehicleSpeed)
-        .Timestamp(DateTime.UtcNow, WritePrecision.Ns);
+        .Timestamp(DateTime.UtcNow, WritePrecision.S);
 
     await influxDbClient.GetWriteApiAsync().WritePointAsync(point, influxdbBucket, influxdbOrganization);
     Console.WriteLine("Traffic_jam inserted in InlfuxDb.");
@@ -73,19 +94,22 @@ async Task WriteToInfluxDbAsync(double timestep, string lane, double maxVehicleS
 // MQTT
 async Task ApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs e)
 {
-    string payload = Encoding.UTF8.GetString(e.ApplicationMessage.Payload); 
-    /*if (e.ApplicationMessage.Topic == vehicleTopic)
-    {
-        mqttService.PublishMessage("monitoring/vehicles", payload);
-        return;
-    }*/
+    string payload = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
+    //if (e.ApplicationMessage.Topic == vehicleTopic)
+    //{
+    //    mqttService.PublishMessage("monitoring/vehicles", payload);
+    //    return;
+    //}
+
+    Console.WriteLine(e.ApplicationMessage.Topic);
 
     if (e.ApplicationMessage.Topic == ekuiperTopic)
     {
         // sending data to RabbitMq Queue
-        channel.BasicPublish(string.Empty, "monitoring.jam", false, null, e.ApplicationMessage.Payload);
+        // channel.BasicPublish(string.Empty, "monitoring.jam", false, null, e.ApplicationMessage.Payload);
 
         Console.WriteLine($"Too slow traffic: {payload}");
+        await mqttService.HubContext.Clients.All.SendAsync("onNewTrafficJam", payload, DateTime.UtcNow);
         var jsonData = (JObject)JsonConvert.DeserializeObject(payload);
         double timestep = jsonData.SelectToken("timestep").Value<double>();
         string lane = jsonData.SelectToken("lane").Value<string>();
@@ -96,7 +120,7 @@ async Task ApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventAr
 
         return;
     }
-    
+
     Console.WriteLine("Unknown MQTT topic...");
 }
 
@@ -111,6 +135,6 @@ consumer.Received += (model, ev) =>
 };
 
 channel.BasicConsume(queue: rabbitMqVehicleQueue, autoAck: true, consumer: consumer);
-
-while (true) ;
 #endregion
+
+app.Run();

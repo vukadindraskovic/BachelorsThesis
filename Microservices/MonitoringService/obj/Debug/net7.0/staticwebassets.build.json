@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "W/v0scOXniOmG08mRa3hi1go96VGHPvka/FTUafi2os=",
+  "Source": "MonitoringService",
+  "BasePath": "_content/MonitoringService",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
