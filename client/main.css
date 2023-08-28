@@ -1,0 +1,22 @@
+table {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 10px;
+    border: 1px solid black;
+    width: 150px;
+}
+.rootDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 10px;
+}
+.contentDiv {
+    justify-content: space-around;
+}
+.bodyClass {
+    display: flex;
+    flex-direction: column;
+}

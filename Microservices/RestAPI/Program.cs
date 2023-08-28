@@ -17,6 +17,14 @@ builder.Services.AddSwaggerGen();
 var influxDbClient = InfluxDBClientFactory.Create(influxdbAddress, influxdbToken);
 builder.Services.AddSingleton(x => influxDbClient);
 
+builder.Services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+{
+    builder.AllowAnyMethod()
+            .AllowAnyHeader()
+            .SetIsOriginAllowed(origin => true)
+            .AllowCredentials();
+}));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,6 +35,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
+
+app.UseCors("CorsPolicy");
 
 app.MapControllers();
 
