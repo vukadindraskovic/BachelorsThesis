@@ -22,8 +22,6 @@ D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\bin\Debug\
 D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\bin\Debug\net7.0\InfluxDB.Client.Core.dll
 D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\bin\Debug\net7.0\JsonSubTypes.dll
 D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\bin\Debug\net7.0\Microsoft.Extensions.ObjectPool.dll
-D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\bin\Debug\net7.0\Microsoft.Extensions.Primitives.dll
-D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\bin\Debug\net7.0\Microsoft.Net.Http.Headers.dll
 D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\bin\Debug\net7.0\Microsoft.Win32.SystemEvents.dll
 D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\bin\Debug\net7.0\NodaTime.dll
 D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\bin\Debug\net7.0\NodaTime.Serialization.JsonNet.dll
@@ -39,3 +37,12 @@ D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\bin\Debug\
 D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\obj\Debug\net7.0\MonitoringService.MvcApplicationPartsAssemblyInfo.cache
+D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\obj\Debug\net7.0\staticwebassets\msbuild.MonitoringService.Microsoft.AspNetCore.StaticWebAssets.props
+D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\obj\Debug\net7.0\staticwebassets\msbuild.build.MonitoringService.props
+D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.MonitoringService.props
+D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.MonitoringService.props
+D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\obj\Debug\net7.0\staticwebassets.pack.json
+D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\obj\Debug\net7.0\staticwebassets.build.json
+D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\obj\Debug\net7.0\staticwebassets.development.json
+D:\Fakultet\8. Semestar\Diplomski rad\Microservices\MonitoringService\obj\Debug\net7.0\scopedcss\bundle\MonitoringService.styles.css

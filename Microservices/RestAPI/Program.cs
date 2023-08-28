@@ -2,8 +2,7 @@ using InfluxDB.Client;
 
 // InfluxDB
 var influxdbAddress = "http://influxdb:8086";
-var influxdbToken = "jeDCcUAE5JDCVRpAKs97o00XXQikkuOxmITZ9XrOz2soYKBD_wOZ6IfRZidjm78QGdC6LJfaTKBFcNvA7pmsrw==".ToCharArray();
-
+var influxdbToken = "DhTveJ8lDBUsMIDLkHYYnx3bilsVWiCiCylGAxvyZsOd39a32YTsQb0sTG3KE_e4LU0OOHD5OTaMqZ4_V9H-XQ==".ToCharArray();
 
 var builder = WebApplication.CreateBuilder(args);
 

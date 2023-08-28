@@ -90,6 +90,17 @@ services:
         condition: service_healthy
     networks:
       - tcntw
+    ports:
+      - 9000:443
+      - 9001:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_HTTPS_PORT=9000
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=trafficjam
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    volumes:
+        - ./Microservices/MonitoringService/https/aspnetapp.pfx:/https/aspnetapp.pfx:ro
 
   restapi:
     build:
