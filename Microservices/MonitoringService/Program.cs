@@ -61,10 +61,10 @@ async Task WriteToInfluxDbAsync(double timestep, string lane, double maxVehicleS
     var point = PointData
         .Measurement("traffic_jam")
         .Tag("lane", lane)
+        .Tag("vehicle_count", vehicleCount.ToString())
         .Field("timestep", timestep)
-        .Field("vehicle_count", vehicleCount)
         .Field("max_vehicle_speed", maxVehicleSpeed)
-        .Timestamp(DateTime.UtcNow, WritePrecision.Ns);
+        .Timestamp(DateTime.UtcNow, WritePrecision.S);
 
     await influxDbClient.GetWriteApiAsync().WritePointAsync(point, influxdbBucket, influxdbOrganization);
     Console.WriteLine("Traffic_jam inserted in InlfuxDb.");

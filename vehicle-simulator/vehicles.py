@@ -48,7 +48,7 @@ with open(file_path, 'r') as file:
             send_data(vehicle_values)
             prev_timestep = row['timestep_time']
             vehicle_values = []
-            time.sleep(3)
+            time.sleep(1)
         vehicle_values.append(row)
 
 connection.close()

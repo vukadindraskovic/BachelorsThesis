@@ -67,6 +67,11 @@ services:
 
   influxdb:
     image: influxdb:latest
+    healthcheck:
+      test: "curl -f http://localhost:8086/ping"
+      interval: 5s
+      timeout: 10s
+      retries: 5
     networks:
       - tcntw
     ports:
@@ -85,6 +90,19 @@ services:
         condition: service_healthy
     networks:
       - tcntw
+
+  restapi:
+    build:
+      context: .
+      dockerfile: ./Microservices/RestAPI/Dockerfile
+    depends_on:
+      influxdb:
+        condition: service_healthy
+    networks:
+      - tcntw
+    ports: 
+      - 80:80
+
 
 networks:
   tcntw:
