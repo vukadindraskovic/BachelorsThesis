@@ -14,6 +14,7 @@ The detected jam is sent to 'ekuiper/jam' topic.
 
 There is Web client used for showing the traffic jam. There is real time notification option and query option for results.
 Real time notification works with Monitoring service through SignalR, while static querying works with RestAPI through HTTP GET requests.
+I start it by running Live server in VS Code, cause it is simple client.
 
 For InfluxDb there is organization called 'vukadin' and bucket called 'bachelorsThesis'.
 You will get new token different from mine from InfluxDb when you create account, so you should change it in the monitoring service.
